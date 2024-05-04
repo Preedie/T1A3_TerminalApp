@@ -1,13 +1,35 @@
 # To Do List Application
+import json
+
+CREATED_USER_STORAGE = 'created-user.json'
+logged_in_user = None # Stores the currenly logged in user.
+def load_user():
+    try:
+        with open(CREATED_USER_STORAGE, 'r') as storage:
+            return json.load(storage)
+    except FileNotFoundError:
+        return {} 
+    
+def save_user(data):
+    with open(CREATED_USER_STORAGE, 'w') as storage:
+        json.dump(data, storage)
 
 def create_user():
-    input('Create Username: ')
-    input('Create Password: ')
+    username = input('Create Username: ')
+    password = input('Create Password: ')
+    
     # This function prompts the user to create their own user by entering their desired username and password.    
     
 def login_user():
-    input('Enter Username: ')
-    input('Enter Password: ')
+    username = input('Enter Username: ')
+    password = input('Enter Password: ')
+    if username in unique_user and unique_user[username] == password: 
+        print(f'Welcome {username}!')
+    else:
+        print('Invalid Username or Password. Try again.')
+    # In this line python is checking to see if username is in unique_user. 
+    # If there is a matching username and the password equals the username passed, then it will log you in.
+    
     # This function prompts the user for teir username and password to login so tasks can be saved/viewed for/from future/past sessions.
 
 def add_task(): 
@@ -76,4 +98,4 @@ def main_menu():
     # to be more modular if i feel asif i need to add or remove anything.
     # I used a while loop to keep the menu open until the user chooses to log out.
             
-main_menu()      
+main_menu()     
