@@ -42,6 +42,8 @@ def create_user():
             database = open('user-database.txt','a')
             database.write(username + ',' + password + '\n')
             print(f'Welcome {username}, enjoy.')
+
+create_user()
     
 def login_user():
     username = input('Enter Username: ') 
@@ -72,21 +74,15 @@ def login_user():
         except:
             print('Login Error')
 
-def home():
-    option = {
-        1: create_user,
-        2: login_user
-    }
-    
-    while True:
-        print('1. Signup')
-        print('2. Login')
-        choice = input('Enter number to signup or login: ')
-    
-        if choice in option:
-            option[choice]()
-        else:
-            print('Please enter an option')
+def home(option=None):
+    option = input('Login | Signup: ')
+    if option == 'login':
+        login_user()
+    elif:
+        option == 'Signup'
+        create_user()
+    else:
+        print('Please enter an option')
 home()       
         
         

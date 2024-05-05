@@ -19,7 +19,7 @@ def create_user():
     password = input('Create Password: ')
     user_info = load_user()
     user_info[username] = password
-    save_user(user_info)
+    save_user(user_info)22
     print('Welcome')
     login_user()
     
