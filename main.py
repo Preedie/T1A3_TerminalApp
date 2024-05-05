@@ -17,21 +17,32 @@ def save_user(data):
 def create_user():
     username = input('Create Username: ')
     password = input('Create Password: ')
+    user_info = load_user()
+    user_info[username] = password
+    save_user(user_info)
+    print('Welcome')
+    login_user()
     
     # This function prompts the user to create their own user by entering their desired username and password.    
     
 def login_user():
+    global logged_in_user
     username = input('Enter Username: ')
     password = input('Enter Password: ')
-    if username in unique_user and unique_user[username] == password: 
-        print(f'Welcome {username}!')
+    user_info = load_user()
+    if username in user_info and user_info[username] == password:
+        print('Login Successful, Welcome')
+        logged_in_user = username
+        main_menu()
     else:
-        print('Invalid Username or Password. Try again.')
-    # In this line python is checking to see if username is in unique_user. 
-    # If there is a matching username and the password equals the username passed, then it will log you in.
-    
-    # This function prompts the user for teir username and password to login so tasks can be saved/viewed for/from future/past sessions.
-
+        print('Login Failed, Try Again')
+        
+def logout_user():
+    global logged_in_user
+    logged_in_user = None
+    print('Logged Out')
+    # This function logs the user out and sends them to the login screen.
+        
 def add_task(): 
     print('Add task Function')
     #This function is used to add the task.
@@ -67,35 +78,38 @@ def logout_application():
     # This function logs the user out and sends them to the login screen.
 
 def main_menu():
-    options = {
-        '1': add_task,
-        '2': view_all_tasks,
-        '3': completed_tasts,
-        '4': delete_task,
-        '5': help_controls,
-        '6': archived_tasks,
-        '7': logout_application 
-    }
+
+        options = {
+            '1': add_task,
+            '2': view_all_tasks,
+            '3': completed_tasts,
+            '4': delete_task,
+            '5': help_controls,
+            '6': archived_tasks,
+            '7': logout_application 
+        }
     
-    while True:
-        print('Welcome to To Do List')
-        print('1. Add a tasks')
-        print('2. View all tasks')
-        print('3. Completed tasks')
-        print('4. Delete tasks')
-        print('5. Help and Controls')
-        print('6. Archived tasks')
-        print('7. Logout of application')
-        choice = input('Enter Menu number: ')
+        while True:
+            print('Welcome to To Do List')
+            print('1. Add a tasks')
+            print('2. View all tasks')
+            print('3. Completed tasks')
+            print('4. Delete tasks')
+            print('5. Help and Controls')
+            print('6. Archived tasks')
+            print('7. Logout of application')
+            choice = input('Enter Menu number: ')
+            
+            if choice in options:
+                options[choice]()
+            else:
+                print('Please enter a valid menu number')
         
-        if choice in options:
-            options[choice]()
-        else:
-            print('Please enter a valid menu number')
+main_menu()
             
     # I created this dictionary to hold the options for the main menu, i went with
     # a dictionary because it is easier to read and understand, and also allows the application
     # to be more modular if i feel asif i need to add or remove anything.
     # I used a while loop to keep the menu open until the user chooses to log out.
             
-main_menu()     
+ 
