@@ -74,17 +74,35 @@ def home(database):
     else:
         print("Please enter an option")
         return False
+    
+################################################################################################################################################ ABOVE DONE
 
 
 def add_task():
-    print("Add task Function")
-    # This function is used to add the task.
+    while True:
+        task_title = input('Enter task title: ')
+        task_info = input('Enter task information: ')
+        task_priority = input('Enter (High, Medium, Low) to set task importance or press enter to skip: ')
+        task_importance = '!' if task_priority.lower() == 'High' else '' if task_priority else ''
+        task_duedate = input('Enter task due date (DD/MM/YYYY) or press enter to skip: ')
 
+        add_task_data = {
+            'task_title': task_title,
+            'task_info': task_info,
+            'task_priority': task_priority,
+            'task_importance': task_importance,
+            'task_duedate': task_duedate
+        }
 
-def created_task_info():
-    input("Enter Task Information: ")
-    # This function is used to enter created tasks information.
+        with open('add-task.txt', 'a') as file:
+            file.write(str(add_task_data) + '\n')
 
+        print(f'NICE! {task_title} has been added to your To-dos!')
+
+        choice = input('Do you want to create another task? (Yes/No): ')
+        if choice.lower() != 'yes':
+            break
+        # This function is used to add the task.
 
 def view_all_tasks():
     print("View all tasks Function")
@@ -102,14 +120,19 @@ def delete_task():
 
 
 def help_controls():
-    print("Add decription of how to display and navigate menus create/del tasks")
+    print("-------Welcome to my To-Do List/Task Application!--------")
     # This function will show the user how to use the application
+    return
 
 
 def archived_tasks():
     print("Archived tasks Function")
     # This function is used to view all the archived tasks and allow the user to un archive.
 
+def logout_application():
+    print('Logging out of user')
+    exit()   
+    # This function logs the user out and sends them to the login screen.
 
 def main_menu():
 
@@ -120,6 +143,7 @@ def main_menu():
         "4": delete_task,
         "5": help_controls,
         "6": archived_tasks,
+        "7": logout_application
     }
 
     while True:
