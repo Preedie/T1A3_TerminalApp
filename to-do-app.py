@@ -1,3 +1,4 @@
+import sys
 def create_user(database):
     database = open("user-database.txt", "r")
     # Database will link to the user-database.txt file and will allow the user to write login information to it. (creating their account and saving it for future sessions to login to)
@@ -43,20 +44,22 @@ def create_user(database):
             database = open("user-database.txt", "a")
             database.write(username + "," + password + "\n")
             print(f"Welcome {username}, enjoy.")
-
+    database.seek(0) # Reset file read to beginning (database)
 
 def login_user(database):
-    username = input("Enter Username: ")
+    username = input("Enter Username: ") # Username and Password Enteries 
     password = input("Enter Password: ")
 
-    if not username or not password:
+    if not username or not password: # If the username and/or password do not match a created user in user-database it will return user to login 
         print("Username or Password cannot be empty")
         return login_user(database)
 
     with open("user-database.txt", "r") as file:
 
         for line in file:
-            uname, pwd = line.strip().split(",")
+            user_name_pwd = line.strip().split(",")
+            if len(user_name_pwd) == 2:
+                uname, pwd = user_name_pwd
             if username == uname and password == pwd:
                 print("Login successful")
                 print("Hi,", username)
@@ -64,20 +67,17 @@ def login_user(database):
         print("Login failed: Username or Password incorrect or account does not exist")
         return False
 
-
 def home(database):
-    option = input("Login | Signup: ")
-    if option == "Login":
-        return login_user(database)
-    elif option == "Signup":
-        return create_user(database)
-    else:
-        print("Please enter an option")
-        return False
-
-
-################################################################################################################################################ ABOVE DONE
-
+    while True:
+        option = input("Login | Signup | Exit: ").strip().lower()
+        if option == "login":
+            return login_user(database)
+        elif option == 'signup':
+            return create_user(database)
+        elif option == 'exit':
+            sys.exit()
+        else:
+            print("Please enter an option")
 
 def add_task():
     while True:
@@ -111,7 +111,6 @@ def add_task():
             break
         # This function is used to add the task.
 
-
 def view_all_tasks():
     while True:
         with open("add-task.txt", "r") as file:
@@ -126,34 +125,28 @@ def view_all_tasks():
         if choice.lower() == "exit":
             break  # Break out of the loop to return to the main menu
 
-
 def completed_tasts():
     print("Mark a task as complete Function")
     # This function is used to mark a task as complete.
 
-
 def delete_task():
     print("Delete a task Function")
     # This function is used to delete tasks and send them to the ARCHIVED function
-
 
 def help_controls():
     print("-------Welcome to my To-Do List/Task Application!--------")
     # This function will show the user how to use the application
     return
 
-
 def archived_tasks():
     print("Archived tasks Function")
     # This function is used to view all the archived tasks and allow the user to un archive.
 
-
 def logout_application():
     print('Logging out of user')
-    return True
+    return False
  
     # This function logs the user out and sends them to the login screen.
-
 
 def main_menu(user_logged_in, database):
 
@@ -182,6 +175,7 @@ def main_menu(user_logged_in, database):
             if choice in options:
                 if choice == '7':
                     user_logged_in = not options[choice]() # if the user inputs 7 they log out which will update the user_logged_in to false returning them to signup/create
+                    break
                 else:
                     options[choice]()
             else:
@@ -190,17 +184,17 @@ def main_menu(user_logged_in, database):
             print("You need to login first")
             if home(database): # This will call the home function and update the user_logged_in to True if the user indeed passes the login requirements
                 user_logged_in = True
-            return
-
+            
+    return
 
 def main():
-    with open("user-database.txt", "r") as file:
-        user_logged_in = False
-        while not user_logged_in:
-            user_logged_in = home(file)
-            if user_logged_in:
-                main_menu(user_logged_in, file)
-
+    while True: 
+        with open("user-database.txt", "r") as file:
+            user_logged_in = False
+            while not user_logged_in:
+                user_logged_in = home(file)
+                if user_logged_in:
+                    main_menu(user_logged_in, file)
 
 if __name__ == "__main__":
     main()
