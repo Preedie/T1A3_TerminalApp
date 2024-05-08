@@ -1,4 +1,5 @@
 import sys
+
 def create_user(database):
     database = open("user-database.txt", "r")
     # Database will link to the user-database.txt file and will allow the user to write login information to it. (creating their account and saving it for future sessions to login to)
@@ -8,43 +9,24 @@ def create_user(database):
     # This is where the password that is entered/created will be input.
     password_confirmation = input("Confirm Password: ")
     # This will prompt the user to confirm their password to ensure they match.
-    username_store = []
-    # This will store the username input, into a list
-    password_store = []
-    # This will store the password input, into a list
-    for i in database:
-        a, b = i.split(",")
-        b = b.strip()
-        username_store.append(a)
-        password_store.append(b)
-    data = dict(zip(username_store, password_store))
-    # the data variable was made so i could print the usernames and passwords in dict form, it is
-    # slightly reduntant as the usernames and passwords are being stored
-    # implicitly due to them being stored in a seperate txt file however i found it easier to call
-    # the list in dict form so i could read/see what was happening to ensure it was what i wanted. (Writing and reading the inputs by the user)
-
-    # The for loop used here will take the username and password strip them of their white space
-    # and store them into a (list) in a seperate txt file.
-    # This will allow the user to input their username and password into the dictionary.
 
     if password != password_confirmation:
         print("Passwords do not match, try again")
         create_user(database)
+        return
         # Simple code reading the input from the user from password variable making sure password_confirmation matches and then
         # storing the password in a list within the txtfile using password_store.
-    else:
-        if len(password) <= 7:
-            print("Password must be at least 7 characters")
-            create_user(database)
-            # If the password created is shorter than 7 characters this code will as you to rewrite your password with atleast 7 characters.
-        elif username in username_store:
-            print("Username already exists, try again")
-            create_user(database)
-        else:
-            database = open("user-database.txt", "a")
-            database.write(username + "," + password + "\n")
-            print(f"Welcome {username}, enjoy.")
-    database.seek(0) # Reset file read to beginning (database)
+    
+    with open('user-database.txt', 'r') as file:
+        for line in file:
+            uname, _ = line.strip().split(', ')
+            if username == uname:
+                print('Please pick another username!')
+                create_user(database)
+                return
+    with open('user-database.txt', 'a') as file:
+        file.write(username + ',' + password + '\n')
+        print(f'Welcome {username}, enjoy making your tasks!')
 
 def login_user(database):
     username = input("Enter Username: ") # Username and Password Enteries 
@@ -54,17 +36,18 @@ def login_user(database):
         print("Username or Password cannot be empty")
         return login_user(database)
 
-    with open("user-database.txt", "r") as file:
-
+    with open("user-database.txt", "r") as file: # Here the application is opening and reading the user-datatxt to check the uname and pwd exist
         for line in file:
-            user_name_pwd = line.strip().split(",")
-            if len(user_name_pwd) == 2:
+            user_name_pwd = line.strip().split(",") # Ensuring uname and pwd are split 
+            if len(user_name_pwd) == 2: # Ensuring there are two parts (which split took care of) in the form of uname and pwd
                 uname, pwd = user_name_pwd
-            if username == uname and password == pwd:
+            if username == uname and password == pwd: # if the uname and pwd are saved in userdata txt this code outputs
                 print("Login successful")
                 print("Hi,", username)
                 return True
-        print("Login failed: Username or Password incorrect or account does not exist")
+        print("Login failed: Username or Password incorrect or account does not exist") 
+        # if uname and pwd dont match any created users 
+        # user is returned to login
         return False
 
 def home(database):
@@ -113,6 +96,7 @@ def add_task():
 
 def view_all_tasks():
     while True:
+        print('########## Saved Tasks ##########')
         with open("add-task.txt", "r") as file:
             for line in file:
                 task_data = eval(line.strip())
@@ -130,8 +114,39 @@ def completed_tasts():
     # This function is used to mark a task as complete.
 
 def delete_task():
-    print("Delete a task Function")
-    # This function is used to delete tasks and send them to the ARCHIVED function
+    tasks_to_store = []
+    with open('add-task.txt', 'r') as file:
+        for line in file:
+            task_data = eval(line.strip()) # Identifies each line in task_data as a dictionary
+            tasks_to_store.append(task_data)
+
+    if not tasks_to_store: # This will check if there are no tasks
+        print('There are no tasks to delete.')
+        return
+    
+    print('Please choose a task you would like to delete: ')
+    for i, task in enumerate(tasks_to_store, 1): # This will enumerate a list of tasks that have been created from the txt file starting at 1.
+        print(f'{i}. {task["task_title"]}')
+
+    while True:
+        try:
+            choice = int(input('Enter the task number to delete it, or enter 0 to exit: '))
+            if choice == 0:
+                return
+            elif 1 <= choice <= len(tasks_to_store):
+                del tasks_to_store[choice - 1] # This will delete the selected class if its above 0 otherwise the user will exit delete task
+                with open('add-task.txt', 'w') as file: # This will update the txt file taht stores the tasks if a task is deleted
+                    for task in tasks_to_store:
+                        file.write(str(task) + '\n')
+                print('Task deleted successfully.')
+                return
+            else:
+                print("There's no task with that number! Try again.")
+        except ValueError:
+            print('You have no power here hacker, enter a valid task number!')
+
+
+    
 
 def help_controls():
     print("-------Welcome to my To-Do List/Task Application!--------")
