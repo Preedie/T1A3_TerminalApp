@@ -29,7 +29,7 @@ def create_user(database):
     if password != password_confirmation:
         print("Passwords do not match, try again")
         create_user(database)
-        # Simple code reading the input from the user from password variable making sure password_confirmation matches and then 
+        # Simple code reading the input from the user from password variable making sure password_confirmation matches and then
         # storing the password in a list within the txtfile using password_store.
     else:
         if len(password) <= 7:
@@ -74,39 +74,57 @@ def home(database):
     else:
         print("Please enter an option")
         return False
-    
+
+
 ################################################################################################################################################ ABOVE DONE
 
 
 def add_task():
     while True:
-        task_title = input('Enter task title: ')
-        task_info = input('Enter task information: ')
-        task_priority = input('Enter (High, Medium, Low) to set task importance or press enter to skip: ')
-        task_importance = '!' if task_priority.lower() == 'High' else '' if task_priority else ''
-        task_duedate = input('Enter task due date (DD/MM/YYYY) or press enter to skip: ')
+        task_title = input("Enter task title: ")
+        task_info = input("Enter task information: ")
+        task_priority = input(
+            "Enter (High, Medium, Low) to set task importance or press enter to skip: "
+        )
+        task_importance = (
+            "!" if task_priority.lower() == "High" else "" if task_priority else ""
+        )
+        task_duedate = input(
+            "Enter task due date (DD/MM/YYYY) or press enter to skip: "
+        )
 
         add_task_data = {
-            'task_title': task_title,
-            'task_info': task_info,
-            'task_priority': task_priority,
-            'task_importance': task_importance,
-            'task_duedate': task_duedate
+            "task_title": task_title,
+            "task_info": task_info,
+            "task_priority": task_priority,
+            "task_importance": task_importance,
+            "task_duedate": task_duedate,
         }
 
-        with open('add-task.txt', 'a') as file:
-            file.write(str(add_task_data) + '\n')
+        with open("add-task.txt", "a") as file:
+            file.write(str(add_task_data) + "\n")
 
-        print(f'NICE! {task_title} has been added to your To-dos!')
+        print(f"NICE! {task_title} has been added to your To-dos!")
 
-        choice = input('Do you want to create another task? (Yes/No): ')
-        if choice.lower() != 'yes':
+        choice = input("Do you want to create another task? (Yes/No): ")
+        if choice.lower() != "yes":
             break
         # This function is used to add the task.
 
+
 def view_all_tasks():
-    print("View all tasks Function")
-    # This function is used to view all the tasks created.
+    while True:
+        with open("add-task.txt", "r") as file:
+            for line in file:
+                task_data = eval(line.strip())
+                print("Title: ", task_data["task_title"])
+                print("Importance: ", task_data.get("task_priority", "Not set"))  # Handle missing priority
+                print("Due Date: ", task_data.get("task_duedate", "Not set"))  # Handle missing due date
+                print()  # Add a newline between tasks
+
+        choice = input("Press Enter to continue or type 'exit' to return to main menu: ").strip()
+        if choice.lower() == "exit":
+            break  # Break out of the loop to return to the main menu
 
 
 def completed_tasts():
@@ -129,12 +147,15 @@ def archived_tasks():
     print("Archived tasks Function")
     # This function is used to view all the archived tasks and allow the user to un archive.
 
+
 def logout_application():
     print('Logging out of user')
-    exit()   
+    return True
+ 
     # This function logs the user out and sends them to the login screen.
 
-def main_menu():
+
+def main_menu(user_logged_in, database):
 
     options = {
         "1": add_task,
@@ -143,24 +164,33 @@ def main_menu():
         "4": delete_task,
         "5": help_controls,
         "6": archived_tasks,
-        "7": logout_application
+        "7": logout_application,
     }
 
     while True:
         print("Welcome to To Do List")
-        print("1. Add a tasks")
-        print("2. View all tasks")
-        print("3. Completed tasks")
-        print("4. Delete tasks")
-        print("5. Help and Controls")
-        print("6. Archived tasks")
-        print("7. Logout of application")
-        choice = input("Enter Menu number: ")
+        if user_logged_in:
+            print("1. Add a tasks")
+            print("2. View all tasks")
+            print("3. Completed tasks")
+            print("4. Delete tasks")
+            print("5. Help and Controls")
+            print("6. Archived tasks")
+            print("7. Logout of application")
+            choice = input("Enter Menu number: ")
 
-        if choice in options:
-            options[choice]()
+            if choice in options:
+                if choice == '7':
+                    user_logged_in = not options[choice]() # if the user inputs 7 they log out which will update the user_logged_in to false returning them to signup/create
+                else:
+                    options[choice]()
+            else:
+                print("Please enter a valid menu number")
         else:
-            print("Please enter a valid menu number")
+            print("You need to login first")
+            if home(database): # This will call the home function and update the user_logged_in to True if the user indeed passes the login requirements
+                user_logged_in = True
+            return
 
 
 def main():
@@ -169,8 +199,9 @@ def main():
         while not user_logged_in:
             user_logged_in = home(file)
             if user_logged_in:
-                main_menu()
+                main_menu(user_logged_in, file)
 
 
 if __name__ == "__main__":
     main()
+
