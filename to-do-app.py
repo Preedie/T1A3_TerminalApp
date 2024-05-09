@@ -122,15 +122,56 @@ def view_all_tasks():
                 print("Title: ", task_data["task_title"])
                 print("Importance: ", task_data.get("task_priority", "Not set"))  # Handle missing priority
                 print("Due Date: ", task_data.get("task_duedate", "Not set"))  # Handle missing due date
+                completed_status = "Completed" if task_data.get("completed", False) else "Not Completed" # This is going to add a 'Completed' Status to the view tasks if the task is completed in completed tasks def
+                print("Complete: ", completed_status) # Prints the code above but in a user friendly manner.
                 print()  # Add a newline between tasks
 
-        choice = input("Press Enter to continue or type 'exit' to return to main menu: ").strip()
+        choice = input("Enter '0' or type 'exit' to return to main menu: ").strip()
         if choice.lower() == "exit":
-            break  # Break out of the loop to return to the main menu
+             break
+        elif choice == "0":
+            return
+        break  # Break out of the loop to return to the main menu
 
-def completed_tasts():
-    print("Mark a task as complete Function")
-    # This function is used to mark a task as complete.
+def completed_tasks():
+    print("######### COMPLETED TASKS #########")
+    tasks_to_store = []
+    with open('add-task.txt', 'r') as file:
+        for line in file:
+            task_data = eval(line.strip()) # Identifies the information in task data as a dict
+            tasks_to_store.append(task_data)
+
+    if not tasks_to_store: # this is just checking if theres any tasks to store 
+        print('\n'+ 'There are no tasks to mark as completed' + '\n')
+        return
+    
+    print("Choose a task you would like to add to 'Completed': ")
+    for i, task in enumerate(tasks_to_store, 1):
+        print(f'{i}. {task["task_title"]} - {"Completed" if task.get("completed", False) else "Not Completed"}')
+
+    while True:
+        try:
+            choice = int(input("Enter the task number starting from '1' to mark task as complete or to reverse completion, or enter '0' to exit: "))
+            if choice == 0:
+                return
+            elif 1 <= choice <= len(tasks_to_store):
+                task = tasks_to_store[choice - 1]
+                if task.get('completed', False):
+                    task['completed'] = False # This will hopefully reverse the completed task, it's late and as i write this comment ive not yet tested it
+                    # i may just have a mental breakdown if it doesn't work, will update with an edit.
+                    # This function is used to mark a task as complete.
+                    print('Task completion reversed!')
+                else:
+                    task['completed'] = True #This will make the task complete "fingers crossed"
+                    print('Task completed successfully!')
+                with open('add-task.txt', 'w') as file: # this will update the txt file if there's a task changed to complete.
+                   for updated_task in tasks_to_store:
+                       file.write(str(updated_task) + '\n')  
+                return
+            else:
+                print('There are no tasks with that number, please enter a valid number.')
+        except ValueError:
+            print('You have no power here hacker, enter a valid task number!')
 
 def delete_task():
     tasks_to_store = []
@@ -163,7 +204,7 @@ def delete_task():
                 print("There's no task with that number! Try again.")
         except ValueError:
             print('You have no power here hacker, enter a valid task number!')
-            
+      
 def help_controls():
     print("-------Welcome to my To-Do List/Task Application!--------")
     # This function will show the user how to use the application
@@ -184,7 +225,7 @@ def main_menu(user_logged_in, database):
     options = {
         "1": add_task,
         "2": view_all_tasks,
-        "3": completed_tasts,
+        "3": completed_tasks,
         "4": delete_task,
         "5": help_controls,
         "6": archived_tasks,
@@ -196,7 +237,7 @@ def main_menu(user_logged_in, database):
         if user_logged_in:
             print("1. Add a tasks")
             print("2. View all tasks")
-            print("3. Completed tasks")
+            print("3. Complete tasks")
             print("4. Delete tasks")
             print("5. Help and Controls")
             print("6. Archived tasks")
