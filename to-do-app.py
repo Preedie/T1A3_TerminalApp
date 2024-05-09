@@ -1,7 +1,7 @@
 import sys
 
 def create_user(database):
-    database = open("user-database.txt", "r")
+    database = open("user-database.txt", "a")
     # Database will link to the user-database.txt file and will allow the user to write login information to it. (creating their account and saving it for future sessions to login to)
     username = input("Create Username: ")
     # This is where the username that is entered/created will be input.
@@ -19,11 +19,15 @@ def create_user(database):
     
     with open('user-database.txt', 'r') as file:
         for line in file:
-            uname, _ = line.strip().split(', ')
-            if username == uname:
-                print('Please pick another username!')
-                create_user(database)
-                return
+            if ',' in line:  # Check if the line contains a comma
+                user_info = line.strip().split(', ')
+                if len(user_info) == 2:  # Ensure there are two parts (username and password)
+                    uname, _ = user_info
+                    if username == uname:
+                        print('Please pick another username!')
+                        create_user(database)
+                        return
+    
     with open('user-database.txt', 'a') as file:
         file.write(username + ',' + password + '\n')
         print(f'Welcome {username}, enjoy making your tasks!')
@@ -51,30 +55,45 @@ def login_user(database):
         return False
 
 def home(database):
-    while True:
-        option = input("Login | Signup | Exit: ").strip().lower()
+    while True: # While there has been no valid input from the user the "option" menu will continue to show to allow the user to either
+        #login create an account or to exit the application.
+        option = input("Login | Signup | Exit: ").strip().lower() # I used the strip and lower method so that whatever input the user uses for login
+        #create or exit, the application will accept it and perform what the user specifies 
         if option == "login":
             return login_user(database)
         elif option == 'signup':
-            return create_user(database)
+            create_user(database)
         elif option == 'exit':
             sys.exit()
         else:
             print("Please enter an option")
+            # A very simple and straight forward if loop that takes the users input and checks it against the options.
+            # If an invalid input is used it will perform the else print statement and loop until a valid option is used ending the while loop.
+
+def get_task_priority():
+    while True:
+        task_priority = input("Enter (High, Medium, Low) to set task importance or press enter to skip: ").strip().lower() # Enters the priority of the task and stores in txt
+        if task_priority in ['high', 'medium','low']:
+            return task_priority
+        else: 
+            print("Invaild input please enter 'high', 'medium', 'low', or leave it empty and press enter" )
+            
+def get_task_due_date():
+    while True:
+        task_duedate = input("Enter task due date (DD/MM/YYYY) or press enter to skip: ").lower().strip()
+        if task_duedate in ['high', 'medium','low']:
+            return task_duedate
+        else: 
+            print("Invaild input please enter 'high', 'medium', 'low', or leave it empty and press enter" )
 
 def add_task():
     while True:
-        task_title = input("Enter task title: ")
-        task_info = input("Enter task information: ")
-        task_priority = input(
-            "Enter (High, Medium, Low) to set task importance or press enter to skip: "
-        )
-        task_importance = (
-            "!" if task_priority.lower() == "High" else "" if task_priority else ""
-        )
-        task_duedate = input(
-            "Enter task due date (DD/MM/YYYY) or press enter to skip: "
-        )
+        task_title = input("Enter task title: ") # Enter the task title and store in txt
+        task_info = input("Enter task information: ") # Enter the task info and store it in txt
+        task_priority = get_task_priority()
+        task_importance = '!' if task_priority == 'High' else ''
+        task_duedate = input("Enter task due date (DD/MM/YYYY) or press enter to skip: ")
+        
 
         add_task_data = {
             "task_title": task_title,
@@ -89,7 +108,7 @@ def add_task():
 
         print(f"NICE! {task_title} has been added to your To-dos!")
 
-        choice = input("Do you want to create another task? (Yes/No): ")
+        choice = input("Do you want to create another task? (Yes/No) or press enter to return to main menu: ")
         if choice.lower() != "yes":
             break
         # This function is used to add the task.
@@ -144,10 +163,7 @@ def delete_task():
                 print("There's no task with that number! Try again.")
         except ValueError:
             print('You have no power here hacker, enter a valid task number!')
-
-
-    
-
+            
 def help_controls():
     print("-------Welcome to my To-Do List/Task Application!--------")
     # This function will show the user how to use the application
