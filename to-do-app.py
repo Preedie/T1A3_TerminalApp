@@ -159,7 +159,7 @@ def completed_tasks():
                 if task.get('completed', False):
                     task['completed'] = False # This will hopefully reverse the completed task, it's late and as i write this comment ive not yet tested it
                     # i may just have a mental breakdown if it doesn't work, will update with an edit.
-                    # This function is used to mark a task as complete.
+                    # This function is used to mark a task as in-complete. *edit* thank you lord it works 
                     print('Task completion reversed!')
                 else:
                     task['completed'] = True #This will make the task complete "fingers crossed"
@@ -231,6 +231,8 @@ def main_menu(user_logged_in, database):
         "6": archived_tasks,
         "7": logout_application,
     }
+    # This is a dictionary to select/add functions to create the to do list. I chose a dictionary as it's SUPER easy to add and take away whatever i would like without effecting
+    # or BREAKING all the other code in the program.
 
     while True:
         print("Welcome to To Do List")
