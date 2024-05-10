@@ -1,6 +1,1 @@
-{'task_title': 'This is a task title', 'task_info': 'This is a task information area', 'task_priority': 'high', 'task_importance': '', 'task_duedate': '02/09/2024', 'completed': True}
-{'task_title': 'This is another task to complete', 'task_info': 'This is the information in said task', 'task_priority': 'high', 'task_importance': '', 'task_duedate': '02/01/2003', 'completed': True}
-{'task_title': 'wverarv', 'task_info': 'arvervarverv', 'task_priority': 'high', 'task_importance': '', 'task_duedate': '', 'completed': True}
-{'task_title': "epriva'prvnprovn", 'task_info': 'arvavaevaetaetvaevarv', 'task_priority': 'low', 'task_importance': '', 'task_duedate': '', 'completed': True}
-{'task_title': "aowiercnpwinc'WOEINCOWRIVN", 'task_info': 'ervwrvwvwvwrvwrvwrvwrvwrvwrvwrvwrv', 'task_priority': 'low', 'task_importance': '', 'task_duedate': '', 'completed': True}
-{'task_title': 'cwecAECWRWAReverveverve', 'task_info': 'erververververververververv', 'task_priority': 'medium', 'task_importance': '', 'task_duedate': '', 'completed': False}
+{'task_title': 'Shopping List;', 'task_info': '- Eggs\n- coffee\n- beans\n- milk\n- bread\n- mato sauce\n- chicken\n- chickpeas\n', 'task_priority': 'high', 'task_importance': '', 'task_duedate': ''}

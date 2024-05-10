@@ -1,44 +1,45 @@
 import sys
+import getpass # Allows the user to hide the input of their password from eyeballs.
 
 def create_user(database):
-    database = open("user-database.txt", "a")
-    # Database will link to the user-database.txt file and will allow the user to write login information to it. (creating their account and saving it for future sessions to login to)
-    username = input("Create Username: ")
-    # This is where the username that is entered/created will be input.
-    password = input("Create Password: ")
-    # This is where the password that is entered/created will be input.
-    password_confirmation = input("Confirm Password: ")
-    # This will prompt the user to confirm their password to ensure they match.
+    print('######## CREATE ACCOUNT ########')
+    # Open the user-database txt in read mode to check for existing usernames
+    with open('user-database.txt', 'r') as file:
+        existing_usernames = {line.strip().split(',')[0] for line in file}
 
+    # Prompt user for new username
+    username = input("Create Username: ")
+
+    # Check if the username already exists
+    if username in existing_usernames:
+        print('Username already exists! Please choose another username.')
+        return
+
+    # Prompt user for password and confirmation
+    password = getpass.getpass("Create Password: ")
+    password_confirmation = getpass.getpass("Confirm Password: ")
+
+    # Check if passwords match
     if password != password_confirmation:
         print("Passwords do not match, try again")
-        create_user(database)
         return
-        # Simple code reading the input from the user from password variable making sure password_confirmation matches and then
-        # storing the password in a list within the txtfile using password_store.
-    
-    with open('user-database.txt', 'r') as file:
-        for line in file:
-            if ',' in line:  # Check if the line contains a comma
-                user_info = line.strip().split(', ')
-                if len(user_info) == 2:  # Ensure there are two parts (username and password)
-                    uname, _ = user_info
-                    if username == uname:
-                        print('Please pick another username!')
-                        create_user(database)
-                        return
-    
+
+    # Write the new user to the database
     with open('user-database.txt', 'a') as file:
         file.write(username + ',' + password + '\n')
-        print(f'Welcome {username}, enjoy making your tasks!')
+        print(f'{username} has been created, you can now login.')
 
 def login_user(database):
+    print('######## LOGIN ########')
     username = input("Enter Username: ") # Username and Password Enteries 
-    password = input("Enter Password: ")
+    password = getpass.getpass("Enter Password: ")
 
     if not username or not password: # If the username and/or password do not match a created user in user-database it will return user to login 
         print("Username or Password cannot be empty")
         return login_user(database)
+    
+    uname = None
+    pwd = None
 
     with open("user-database.txt", "r") as file: # Here the application is opening and reading the user-datatxt to check the uname and pwd exist
         for line in file:
@@ -55,6 +56,7 @@ def login_user(database):
         return False
 
 def home(database):
+    print('######## HOME ########')
     while True: # While there has been no valid input from the user the "option" menu will continue to show to allow the user to either
         #login create an account or to exit the application.
         option = input("Login | Signup | Exit: ").strip().lower() # I used the strip and lower method so that whatever input the user uses for login
@@ -88,8 +90,18 @@ def get_task_due_date():
 
 def add_task():
     while True:
+        print('######## ADD TASK MENU ########')
         task_title = input("Enter task title: ") # Enter the task title and store in txt
-        task_info = input("Enter task information: ") # Enter the task info and store it in txt
+        task_info = ''
+
+        # Ive created a loop here to allow the user to create a new line via pressing enter without leaving the task information creation.
+        print("Enter your task information, when you're done type (0) on a newline:")
+        while True:
+            line = input('')
+            if line.lower() == '0':
+                break
+            task_info += line + '\n'
+        
         task_priority = get_task_priority()
         task_importance = '!' if task_priority == 'High' else ''
         task_duedate = input("Enter task due date (DD/MM/YYYY) or press enter to skip: ")
@@ -108,27 +120,34 @@ def add_task():
 
         print(f"NICE! {task_title} has been added to your To-dos!")
 
-        choice = input("Do you want to create another task? (Yes/No) or press enter to return to main menu: ")
+        # This block allows the user to exit when they double confirm they are done creating thier task
+        choice = input("Do you want to create another task? (Yes/No) or press enter to return to main menu:")
         if choice.lower() != "yes":
-            break
-        # This function is used to add the task.
+            if choice == '0':
+                confirmation = input("\nWould you like to create this task?\n")
+                if confirmation.lower() == 'yes':
+                    break
+            else:
+                break
 
 def view_all_tasks():
     while True:
-        print('########## Saved Tasks ##########')
+        print('\n########## Saved Tasks ##########\n')
         with open("add-task.txt", "r") as file:
             for line in file:
-                task_data = eval(line.strip())
-                print("Title: ", task_data["task_title"])
-                print("Importance: ", task_data.get("task_priority", "Not set"))  # Handle missing priority
-                print("Due Date: ", task_data.get("task_duedate", "Not set"))  # Handle missing due date
-                completed_status = "Completed" if task_data.get("completed", False) else "Not Completed" # This is going to add a 'Completed' Status to the view tasks if the task is completed in completed tasks def
-                print("Complete: ", completed_status) # Prints the code above but in a user friendly manner.
-                print()  # Add a newline between tasks
-
+                if line.strip():
+                    task_data = eval(line.strip())
+                    print("Title: ", task_data["task_title"])
+                    print('Information: ', task_data['task_info']) # Shows the task information input by the user.
+                    print("Importance: ", task_data.get("task_priority", "Not set"))  # Handle missing priority.
+                    print("Due Date: ", task_data.get("task_duedate", "Not set"))  # Handle missing due date.
+                    completed_status = "Completed" if task_data.get("completed", False) else "Not Completed" # This is going to add a 'Completed' Status to the view tasks if 
+                    # the task is completed in completed tasks def.
+                    print("Complete: ", completed_status, '\n') # Prints the code above but in a user friendly manner.
+                
         choice = input("Enter '0' or type 'exit' to return to main menu: ").strip()
         if choice.lower() == "exit":
-             break
+            break
         elif choice == "0":
             return
         break  # Break out of the loop to return to the main menu
@@ -174,6 +193,7 @@ def completed_tasks():
             print('You have no power here hacker, enter a valid task number!')
 
 def delete_task():
+    print('######## DELETE TASK MENU ########')
     tasks_to_store = []
     with open('add-task.txt', 'r') as file:
         for line in file:
@@ -210,10 +230,6 @@ def help_controls():
     # This function will show the user how to use the application
     return
 
-def archived_tasks():
-    print("Archived tasks Function")
-    # This function is used to view all the archived tasks and allow the user to un archive.
-
 def logout_application():
     print('Logging out of user')
     return False
@@ -228,26 +244,24 @@ def main_menu(user_logged_in, database):
         "3": completed_tasks,
         "4": delete_task,
         "5": help_controls,
-        "6": archived_tasks,
-        "7": logout_application,
+        "6": logout_application
     }
     # This is a dictionary to select/add functions to create the to do list. I chose a dictionary as it's SUPER easy to add and take away whatever i would like without effecting
     # or BREAKING all the other code in the program.
 
     while True:
-        print("Welcome to To Do List")
+        print("######## WELCOME TO THE MAIN MENU #########")
         if user_logged_in:
             print("1. Add a tasks")
             print("2. View all tasks")
             print("3. Complete tasks")
             print("4. Delete tasks")
             print("5. Help and Controls")
-            print("6. Archived tasks")
-            print("7. Logout of application")
+            print("6. Logout of application")
             choice = input("Enter Menu number: ")
 
             if choice in options:
-                if choice == '7':
+                if choice == '6':
                     user_logged_in = not options[choice]() # if the user inputs 7 they log out which will update the user_logged_in to false returning them to signup/create
                     break
                 else:
@@ -272,4 +286,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
