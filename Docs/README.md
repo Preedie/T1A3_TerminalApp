@@ -133,3 +133,10 @@ The below screenshots including the submenus within the main tasks are sorted in
 
 # Installation
 
+# NOTESNOTESNOTES
+
+The virtual environment was not created successfully because ensurepip is not
+available.  On Debian/Ubuntu systems, you need to install the python3-venv
+package using the following command.
+
+apt install python3.10-venv
