@@ -4,6 +4,7 @@ from datetime import datetime
 
 # This function will create a new user account 
 def create_user(database):
+
     print('######## CREATE ACCOUNT ########')
     # Checks if the user exists or has had a database file made for it in database.txt
     with open('user-database.txt', 'r') as file:
@@ -80,13 +81,13 @@ def home(database):
 
 # This function is to get the priority of a task from the input of the user and then store and display it later in view tasks
 def get_task_priority():
+
     while True:
         task_priority = input("Enter (High, Medium, Low) to set task importance: ").strip().lower()
         if task_priority in ['high', 'medium','low']:
             return task_priority
         else: 
             print("Invaild input please enter 'high', 'medium', 'low'" )
-
 # This function gets the due date if there is one from the user and then stores it for display later in view tasks
 # If a incorrect input for dd/mm/yyyy is used it will prompt the user to try again.
 def get_task_due_date():
@@ -156,7 +157,7 @@ def view_all_tasks(username):
                     completed_status = "Completed" if task_data.get("completed", False) else "Not Completed"
                     print("Complete: ", completed_status, '\n')
                 
-        choice = input("Enter '0' or type 'exit' to return to main menu: ").strip()
+        choice = input("Enter '0' or type 'exit' or press enter to return to main menu: ").strip()
         if choice.lower() == "exit":
             break
         elif choice == "0":
@@ -260,7 +261,7 @@ def logout_application():
 # I made it a dict menu navigating through keys and values becase it was super modular!
 def main_menu(username, user_logged_in, database):
     options = {
-        "1": lambda: add_task(username),
+        "1": lambda: add_task(username), # Lambdas have been added to the options that require the username arg so data is saved uniquely to each user.
         "2": lambda: view_all_tasks(username),
         "3": lambda: completed_tasks(username),
         "4": lambda: delete_task(username),
