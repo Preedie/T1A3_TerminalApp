@@ -1,0 +1,46 @@
+           
+           
+           -------Welcome to my To-Do List/Task Application!--------
+Most of the inputs required to navigate are explained and asked for within the menus!
+So all you have to do is follow along, however to clear up some
+confusion i will add in how to navigate the main menu as it lacks control info!
+aswell as the other menus, just incase :D
+
+HOME: 
+can be navigated by typing out any of the selectors login|signup|help|exit
+they are not case sensitive so feel free to add caps or type them out in lowercase!
+just remember to press enter!
+
+MAIN MENU:
+is navigated by entering in 1 through to 6 for the option you would like.
+
+ADD TASK MENU:
+requires you to write a title, task information, set task importance,
+due date if you desire and then if you would like to create another task!
+
+COMPLETE TASK MENU:
+
+here you can view your completed and not completed tasks. If you would like to 
+complete a task, enter the number that corrosponds with the 
+task you would like to complete! if you would like to reverse the 
+completed task to be "not completed" simply type in the same
+number you typed in to complete it and press enter!
+Alternatively you will also be asked if you owuld instead like to
+return to the main menu.
+
+DELETE TASKS:
+
+To delete a task all you have to do is enter the number the 
+task is eg. (1. This would be task one) and then press enter, this will delete the task entirely
+so be sure you want to delete the task before pressing enter!
+alternatively you can get back to main menu through typing in 0 and pressing enter.
+
+LOGGING OUT:
+
+Logging out is as simple as pressing the logout number!
+That will return you to the home page where you can once again choose a menu.
+
+Enjoy!
+
+
+    

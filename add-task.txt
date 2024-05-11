@@ -1,1 +1,0 @@
-{'task_title': 'Shopping List;', 'task_info': '- Eggs\n- coffee\n- beans\n- milk\n- bread\n- mato sauce\n- chicken\n- chickpeas\n', 'task_priority': 'high', 'task_importance': '', 'task_duedate': ''}
