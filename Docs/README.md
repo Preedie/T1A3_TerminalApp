@@ -133,3 +133,11 @@ The below screenshots including the submenus within the main tasks are sorted in
 
 # Installation
 
+To run the application follow these steps.
+
+1. Make sure you have pyinstaller first by pasting this code into ubuntu.
+~~~ 
+pip install pyinstaller
+~~~
+2. Once pyinstaller is installed, using ubuntu navigated to where the Python file you want to run is located (the directory of the script)
+
