@@ -2,7 +2,7 @@
 
 The application i chose to make was a simple to do list running in the python terminal, it will allow the creating of tasks to then complete features can be found below.
 
-# Features:
+# Application Description and Features
 
 ## Home
 
@@ -81,9 +81,12 @@ A simple logout function for the user to input to allow them to be taken back to
 
 ## Implementation:
 
-I used trelloboard to not only track the tasks i needed to complete but also sort them the way i would like to complete them, i did however realise that due to the way i was writing my code and its modularity that the order of tasks was less important once i had the main menu and selectors within the main menu complete as the way it was designed allowed me to add/remove and adjust alot of the programs functionality without breaking code. I did however stick to the below screenshots mostly with the only deviations from the screen shots being when i went back to patch/change some code already completed as i didn't like the way it functioned logically.
+I used trelloboard to not only track the tasks I needed to complete but also sort them the way I would like to complete them, I did however realise that due to the way I was writing my code and its modularity that the order of tasks was less important once i had the main menu and selectors within the main menu complete as the way it was designed allowed me to add/remove and adjust alot of the programs functionality without "breaking code" so to speak. I did however stick to starting from the top of the doing and then working my way through, with the only deviations from the screen shots being when i went back to patch/change some code already completed as i didn't like the way it functioned logically or of course if i missed something.
 
-The below screenshots including the submenus within the main tasks are sorted in the order and the day they were done. The main tasks are above the sub menu screenshots simply for layout and design, not to convey any day by day procedure.
+Submenus below the main trelloboard show the tasks i had within some of the to-dos.
+
+You may of noticed that there is a cancelled area within my trelloboard, this is because these were additions I would have liked to of added had I of had the time.
+The code however is modular enough that if Im to go back and implement them it would be incredibly easy to build their functions and slot them into the main menu.
 
 ### Screenshots of progress
 
@@ -145,7 +148,7 @@ The below screenshots including the submenus within the main tasks are sorted in
 python3 --version
 ~~~
 
-- If you currently dont have python installed run this command line in your ubuntu terminal.
+- If you currently dont have python installed run this command line in your ubuntu terminal. if you have issues go here [Python Install](https://www.python.org/downloads/)
 
 ~~~
 sudo apt update
@@ -153,6 +156,7 @@ sudo apt install python3
 ~~~
 
 - Next we will install pip copy and paste the code into your ubuntu terminal.
+if you have issues go here [PIP Install](https://pypi.org/project/pip/)
 
 ~~~
 sudo apt update
@@ -178,6 +182,15 @@ git clone https://github.com/repousername/repository.git
 ./To_Do_list.sh
 ~~~
 
+- When you're finished with the application close your ubuntu terminal window, go to search and open your OS cmd prompt.
+In this widow put the following.
+
+~~~
+wsl --shutdown
+~~~
+
+- This will close all virtual enviroments and stop un-used programs from consuming your computers resources pointlessly.
+
 ENJOY!
 
 # Dependencies
@@ -185,3 +198,47 @@ ENJOY!
 - pip
 - ubuntu
 - python
+
+# System Requirements
+
+## Minimum Requirements
+
+- 1 GHZ Processor
+- RAM 2GiB
+- Disk 10GiB
+- Win 10-11
+- Mac OS
+- Linux
+
+Running these specs will very likely cause issues to rise regarding speed and possibly even bluescreens, as the virtual enviroment that runs ubuntu when opening programs can devouer upwards of 2gb of RAM, but in theory, with the minimum specs it is entirely possible to run, albiet slowly.
+
+## Recommended Requirements
+
+- 3 GHZ Processor
+- 16 GiB RAM
+- Disk 500 GiB
+- Win 10-11
+- Mac OS
+- Linux
+
+I recommend nothing less than these specs if you want a smooth experience. If problems are ecnountered with RAM usage I would recommend making a txt file in your %UserProfile% file navigation named .wslconfig within this txt add the following.
+
+~~~
+[wsl2]
+memory=4GB # Limits VM memory in WSL 2 to 4 GB
+processors=2 # Makes the WSL 2 VM use two virtual processors
+~~~
+
+This cannot be run in ubuntu, it has to be entered into the command prompt or MAC equivilent.
+
+this specification will stop the virtual enviroment from eating alot of RAM, however if you're experiencing no issues, you won't need to worry about it.
+
+# Styling 
+
+- The styling guide used for writing the code/program was [PEP-8 Styling guide](https://peps.python.org/pep-0008/#introduction).
+
+# References
+
+- Coder Academy ED lessons and live Classes. [Coder Academy Website](https://info.coderacademy.edu.au)
+
+
