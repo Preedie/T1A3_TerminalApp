@@ -113,13 +113,13 @@ The below screenshots including the submenus within the main tasks are sorted in
 
 ## Dat 4/7 Done:
 
-# Day 8:
+# Day 8-9:
 
 ![Day 8](./TrelloboardPics/Trelloboard10.png)
 
-## Day 8 done:
+## Day 8-9 done:
 
-# Trello Sub Menu Tasks:
+# Trello Sub Menu Tasks Days 1-9:
 
 ![Sub Menu Trello Screenshot](./TrelloboardPics/Trellosubmenu1.png)
 
@@ -133,10 +133,55 @@ The below screenshots including the submenus within the main tasks are sorted in
 
 # Installation
 
-# NOTESNOTESNOTES
+- Follow this link to install ubuntu for your operating system!
 
-The virtual environment was not created successfully because ensurepip is not
-available.  On Debian/Ubuntu systems, you need to install the python3-venv
-package using the following command.
+[Ubuntu Installation Guide](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview)
 
-apt install python3.10-venv
+
+
+- Check that you are running atleast python 3.10.12 by copying this text into your ubuntu terminal.
+
+~~~
+python3 --version
+~~~
+
+- If you currently dont have python installed run this command line in your ubuntu terminal.
+
+~~~
+sudo apt update
+sudo apt install python3
+~~~
+
+- Next we will install pip copy and paste the code into your ubuntu terminal.
+
+~~~
+sudo apt update
+sudo apt install python3-pip
+~~~
+
+1. After running that command line lets check that our pip is up to date, it should read 22.0.2 or a above.
+
+~~~
+pip --version
+~~~
+
+- Next we will clone the git repository so we can run the application.
+1. Go to Github and copy the repositories URL into your ubuntu terminal.
+
+~~~
+git clone https://github.com/repousername/repository.git
+~~~
+
+- Next navigate to the src folder and once inside the src folder run this command.
+
+~~~
+./To_Do_list.sh
+~~~
+
+ENJOY!
+
+# Dependencies
+
+- pip
+- ubuntu
+- python
